@@ -10,12 +10,17 @@ namespace IntelligentHack.IntelligentCache
     {
         public T Deserialize<T>(RedisValue value)
         {
-            return JsonConvert.DeserializeObject<T>(value);
+            return JsonConvert.DeserializeObject<T>(value, _serializerSettings);
         }
 
         public RedisValue Serialize<T>(T instance)
         {
-            return JsonConvert.SerializeObject(instance);
+            return JsonConvert.SerializeObject(instance, typeof(T), _serializerSettings);
         }
+
+        private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
     }
 }
